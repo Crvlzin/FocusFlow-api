@@ -7,7 +7,7 @@ WORKDIR /workspace
 # Copia arquivos do Maven Wrapper e POM primeiro para aproveitar o cache de camadas do Docker
 COPY .mvn/ .mvn/
 COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline -B
+RUN chmod +x mvnw && ./mvnw dependency:go-offline -B
 
 # Copia o código-fonte e compila o pacote executável
 COPY src ./src
