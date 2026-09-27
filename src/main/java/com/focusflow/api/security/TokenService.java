@@ -15,10 +15,10 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    @Value("")
+    @Value("${api.security.token.secret:}")
     private String secret;
 
-    @Value("")
+    @Value("${api.security.token.expiration-hours:24}")
     private Long expirationHours = 24L;
 
     private static final String ISSUER = "focusflow-api";

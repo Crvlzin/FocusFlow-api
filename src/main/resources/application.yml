@@ -1,23 +1,23 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
     name: focusflow-api
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/focusflow_db
-    username: postgres
-    password: password123
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/focusflow_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:password123}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
 
   flyway:
     enabled: true
@@ -25,7 +25,9 @@ spring:
     locations: classpath:db/migration
 
 api:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000,http://localhost:4173}
   security:
     token:
-      secret: ""
-      expiration-hours: 24
+      secret: ${API_SECURITY_TOKEN_SECRET:focusflow-super-secret-key-needs-to-be-changed-in-production}
+      expiration-hours: ${TOKEN_EXPIRATION_HOURS:24}

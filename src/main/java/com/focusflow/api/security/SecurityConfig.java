@@ -19,6 +19,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -27,6 +31,9 @@ import java.util.List;
 public class SecurityConfig {
 
     private final SecurityFilter securityFilter;
+
+    @Value("${api.cors.allowed-origins:http://localhost:5173,http://localhost:3000,http://localhost:4173}")
+    private String allowedOrigins;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -56,11 +63,26 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         var configuration = new CorsConfiguration();
-        // Permite conexões do frontend Vite React local e possíveis deploys futuros
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000"));
+        
+        List<String> patterns = new ArrayList<>();
+        if (allowedOrigins != null && !allowedOrigins.isBlank()) {
+            patterns.addAll(Arrays.stream(allowedOrigins.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .toList());
+        }
+        // Permite previews da Vercel, Netlify e localhost
+        patterns.add("https://*.vercel.app");
+        patterns.add("https://*.netlify.app");
+        patterns.add("http://localhost:*");
+        patterns.add("http://127.0.0.1:*");
+
+        configuration.setAllowedOriginPatterns(patterns);
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "X-Requested-With", "Origin"));
+        configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
