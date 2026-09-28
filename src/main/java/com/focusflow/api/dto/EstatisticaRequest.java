@@ -19,6 +19,10 @@ public record EstatisticaRequest(
     @Min(value = 0, message = "A quantidade de erradas não pode ser negativa")
     int qtdErradas,
 
+    @Min(value = 0, message = "A quantidade total de questões não pode ser negativa")
+    @Schema(description = "Quantidade total de questões realizadas incluindo questões em branco (opcional)")
+    Integer qtdTotal,
+
     @Min(value = 0, message = "A quantidade de minutos não pode ser negativa")
     int qtdMinutos,
 

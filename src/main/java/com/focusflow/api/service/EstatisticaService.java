@@ -60,14 +60,15 @@ public class EstatisticaService {
         long totalMinutos = 0;
         long totalCertas = 0;
         long totalErradas = 0;
+        long totalQuestoes = 0;
 
         for (var r : registros) {
             totalMinutos += r.qtdMinutos();
             totalCertas += r.qtdCertas();
             totalErradas += r.qtdErradas();
+            totalQuestoes += r.qtdTotal();
         }
 
-        long totalQuestoes = totalCertas + totalErradas;
         double taxaGeral = (totalQuestoes > 0)
                 ? Math.round(((double) totalCertas / totalQuestoes) * 1000.0) / 10.0
                 : 0.0;
@@ -95,11 +96,16 @@ public class EstatisticaService {
         // Se o usuário informou data retroativa (ex: ontem), respeita a data informada!
         OffsetDateTime dtRegistro = resolverDataRegistro(request);
 
+        int total = (request.qtdTotal() != null && request.qtdTotal() >= (request.qtdCertas() + request.qtdErradas()))
+                ? request.qtdTotal()
+                : (request.qtdCertas() + request.qtdErradas());
+
         var estatistica = Estatistica.builder()
                 .usuario(usuario)
                 .assunto(assunto)
                 .qtdCertas(request.qtdCertas())
                 .qtdErradas(request.qtdErradas())
+                .qtdTotal(total)
                 .qtdMinutos(request.qtdMinutos())
                 .dtRegistro(dtRegistro)
                 .build();
@@ -113,9 +119,14 @@ public class EstatisticaService {
         var estatistica = buscarEstatisticaDoUsuario(id, usuario);
         var assunto = assuntoService.buscarAssuntoDoUsuario(request.idAssunto(), usuario);
 
+        int total = (request.qtdTotal() != null && request.qtdTotal() >= (request.qtdCertas() + request.qtdErradas()))
+                ? request.qtdTotal()
+                : (request.qtdCertas() + request.qtdErradas());
+
         estatistica.setAssunto(assunto);
         estatistica.setQtdCertas(request.qtdCertas());
         estatistica.setQtdErradas(request.qtdErradas());
+        estatistica.setQtdTotal(total);
         estatistica.setQtdMinutos(request.qtdMinutos());
 
         if (request.dtRegistro() != null || request.dataEstudo() != null) {

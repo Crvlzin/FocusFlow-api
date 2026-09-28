@@ -41,9 +41,9 @@ public class Estatistica {
     @Builder.Default
     private int qtdMinutos = 0;
 
-    // Coluna gerada no PostgreSQL: (qtd_certas + qtd_erradas)
-    @Column(name = "qtd_total", insertable = false, updatable = false)
-    private int qtdTotal;
+    @Column(name = "qtd_total", nullable = false)
+    @Builder.Default
+    private int qtdTotal = 0;
 
     @Column(name = "dt_registro", nullable = false)
     private OffsetDateTime dtRegistro;
@@ -56,7 +56,7 @@ public class Estatistica {
     }
 
     public int getQtdTotalCalculada() {
-        return this.qtdCertas + this.qtdErradas;
+        return Math.max(this.qtdTotal, this.qtdCertas + this.qtdErradas);
     }
 
     public double getTaxaAcerto() {
