@@ -154,7 +154,9 @@ public class EstatisticaService {
         var assunto = e.getAssunto();
         var materia = assunto != null ? assunto.getMateria() : null;
 
-        LocalDate dataEstudo = e.getDtRegistro() != null ? e.getDtRegistro().toLocalDate() : null;
+        LocalDate dataEstudo = e.getDtRegistro() != null
+                ? e.getDtRegistro().withOffsetSameInstant(ZoneOffset.ofHours(-3)).toLocalDate()
+                : null;
 
         return new EstatisticaResponse(
                 e.getIdEstatistica(),
