@@ -22,7 +22,7 @@ RUN groupadd -r spring && useradd -r -g spring spring
 USER spring:spring
 
 # Copia o JAR compilado do estágio anterior
-COPY --from=builder --chown=spring:spring /workspace/target/*.jar app.jar
+COPY --from=builder --chown=spring:spring /workspace/target/app.jar app.jar
 
 # Porta padrão (Render, Railway, Heroku ou Docker local)
 ENV PORT=8080
