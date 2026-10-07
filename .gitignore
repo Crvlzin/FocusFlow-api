@@ -29,5 +29,13 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
+### VS Code & Eclipse ###
 .vscode/
+bin/
+*.class
+
+### Environment Files ###
+.env
+.env.*
+!.env.example
+
