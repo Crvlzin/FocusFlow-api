@@ -43,6 +43,17 @@ A aplicação é 100% containerizada via **Docker multi-stage build** e possui v
 
 ---
 
+## 🌐 Deploys e Links do Ecossistema
+
+| Componente | Ambiente | URL de Acesso | Repositório |
+| :--- | :--- | :--- | :--- |
+| **Backend REST API** | Produção (Render) | ⚡ [https://focusflow-api-snij.onrender.com](https://focusflow-api-snij.onrender.com) | [Crvlzin/FocusFlow-api](https://github.com/Crvlzin/FocusFlow-api) |
+| **Documentação Interativa** | Swagger UI / OpenAPI 3 | 📄 [Acessar Swagger UI](https://focusflow-api-snij.onrender.com/swagger-ui/index.html) | — |
+| **Especificação OpenAPI** | JSON Schema | 📑 [Ver v3/api-docs](https://focusflow-api-snij.onrender.com/v3/api-docs) | — |
+| **Frontend Web (Aplicação)** | Produção (Vercel) | 🔗 [https://focusflow.vercel.app](https://focusflow.vercel.app) | [Crvlzin/FocusFlow](https://github.com/Crvlzin/FocusFlow) |
+
+---
+
 ## 🏛️ Arquitetura do Backend
 
 A API foi projetada seguindo os princípios de **Clean Architecture** e arquitetura em camadas (**Layered N-Tier Architecture**), promovendo baixo acoplamento, alta coesão e testabilidade:
